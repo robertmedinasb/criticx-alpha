@@ -5,12 +5,14 @@ class Review < ApplicationRecord
   belongs_to :reviewable, polymorphic: true
 
   after_create do |review|
-    user_id = review.user_id
-    User.find(user_id).update(review_count: user.review_count + 1)
+    user = User.find(review.user_id)
+    user.increment(:review_count)
+    user.save
   end
 
   after_destroy do |review|
-    user_id = review.user_id
-    User.find(user_id).update(review_count: user.review_count - 1)
+    user = User.find(review.user_id)
+    user.decrement(:review_count)
+    user.save
   end
 end
