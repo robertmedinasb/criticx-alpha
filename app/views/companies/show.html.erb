@@ -7,3 +7,4 @@
 </ul>
 <%= link_to "Back to Companies", companies_path %>
 <%= link_to "Edit This Company", edit_company_path(@company) %>
+<%= link_to "Delete This Company", company_path(@company), method: :delete, data:{confirm: "Really delete the company?"} %>

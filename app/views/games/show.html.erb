@@ -5,6 +5,21 @@
   <li>Release Date: <%= @game.release_date %></li>
   <li>Plattform(s): <%= @game.platforms.map{|platform|platform.name}.join(", ")%></li>
   <li>Genre(s): <%= @game.genres.map{|genre|genre.name}.join", "%></li>
+  <% if @game.category == "expansion" %>
+    <% parent=  @game.parent %>
+    <li>Main_game: <%=link_to parent.name, game_path(parent.id) %></li>
+  <% else %>
+    <% expansions = @game.expansions.map{|game| game} %>
+    <% unless expansions.empty? %>
+      <li>Expansions:</li>
+      <ul>
+        <% expansions.each do|expansion| %>
+          <li><%=link_to expansion.name, game_path(expansion.id)%></li>
+        <% end %>
+      </ul>
+    <% end %>
+  <% end %>
 </ul>
 <%= link_to "Back to Games", games_path %>
-<%= link_to "Edit Game", edit_game_path(@game) %>
+<%= link_to "Edit This Game", edit_game_path(@game) %>
+<%= link_to "Delete This Game", game_path(@game), method: :delete, data:{confirm: "Really delete the game?"} %>
