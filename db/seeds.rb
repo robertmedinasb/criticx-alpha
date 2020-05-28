@@ -16,7 +16,7 @@ def create_platforms_relationships(new_game, platforms)
   return if platforms.nil?
 
   begin
-    platforms.each { |platform| new_game.platforms << Platform.find_by(name: platform) }
+    platforms.each { |platform| new_game.platforms << Platform.find_by(name: platform['name']) }
   rescue StandardError
     p "Platform relationship not created for #{new_game}"
   end
@@ -47,8 +47,8 @@ end
 puts 'Start seeding data'
 
 companies = JSON.parse(File.read('db/data/companies.json'))
-genres = JSON.parse(File.read('db/data/genres.json'))
 platforms = JSON.parse(File.read('db/data/platforms.json'))
+genres = JSON.parse(File.read('db/data/genres.json'))
 games = JSON.parse(File.read('db/data/games.json'))
 
 puts 'Loading companies'
@@ -64,30 +64,35 @@ platforms.each do |platform|
 end
 
 puts 'Loading genres'
-genres.each do |genre|
+genres['genres'].each do |genre|
   new_genre = Genre.new(name: genre)
   p "#{new_genre} not created" unless new_genre.save
 end
 
-puts 'Loading main games and relationships'
+puts 'Loading main games and relations'
+
 main_games = games.select { |game| game['parent'].nil? }
 
 main_games.each do |game|
-  new_game = Game.new(game.slice('name', 'summary', 'release_data', 'category', 'rating'))
+  new_game = Game.new(game.slice('name', 'summary', 'release_date', 'category', 'rating'))
   if new_game.save
     create_game_relationships(new_game, game)
   else
     p "#{new_game} not created"
   end
 end
-puts 'Loading expansion games and relationships'
+
+puts 'Loading expansion games and relations'
 
 expansion_games = games.reject { |game| game['parent'].nil? }
 
 expansion_games.each do |game|
-  new_game = Game.new(game.slice('name', 'summary', 'release_data', 'category', 'rating'))
+  game_data = game.slice('name', 'summary', 'release_date', 'category', 'rating')
+  game_data['parent'] = Game.find_by(name: game['parent'])
+  new_game = Game.new(game_data)
+
   if new_game.save
-    create_genres_relationships(new_game, game)
+    create_game_relationships(new_game, game)
   else
     p "#{new_game} not created"
   end
