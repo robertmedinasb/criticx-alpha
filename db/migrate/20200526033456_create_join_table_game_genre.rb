@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class CreateJoinTableGameGenre < ActiveRecord::Migration[6.0]
   def change
     create_join_table :games, :genres do |t|
@@ -5,4 +7,3 @@ class CreateJoinTableGameGenre < ActiveRecord::Migration[6.0]
       # t.index [:genre_id, :game_id]
     end
   end
-end

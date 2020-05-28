@@ -87,9 +87,9 @@ puts 'Loading expansion games and relations'
 expansion_games = games.reject { |game| game['parent'].nil? }
 
 expansion_games.each do |game|
-  game_data = game.slice('name', 'summary', 'release_date', 'category', 'rating')
-  game_data['parent'] = Game.find_by(name: game['parent'])
-  new_game = Game.new(game_data)
+  game_data = game.slice('name', 'summary', 'release_date', 'category', 'rating', 'parent')
+  p game_data['parent'] = Game.find_by(name: game['parent'])
+  p new_game = Game.new(game_data)
 
   if new_game.save
     create_game_relationships(new_game, game)
