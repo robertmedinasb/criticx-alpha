@@ -7,3 +7,4 @@
   <li>Genre(s): <%= @game.genres.map{|genre|genre.name}.join", "%></li>
 </ul>
 <%= link_to "Back to Games", games_path %>
+<%= link_to "Edit Game", edit_game_path(@game) %>
