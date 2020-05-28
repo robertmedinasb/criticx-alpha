@@ -1,0 +1,8 @@
+<h1><%= @company.name %></h1>
+<p><%= @company.description %></p>
+<ul>
+  <li>Description: <%= @company.description  %></li>
+  <li>Start_date: <%= @company.start_date %></li>
+  <li>Country: <%= @company.country %></li>
+</ul>
+<%= link_to "Back to Companies", companies_path %>

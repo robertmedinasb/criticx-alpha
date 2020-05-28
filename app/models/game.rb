@@ -18,7 +18,7 @@ class Game < ApplicationRecord
   validates :name, :category, presence: true
   validates :name, uniqueness: true
   validates :rating, numericality: { greater_than_or_equal: 0, less_than_or_equal_to: 100 }
-  validates :parent_id, inclusion: { in: Game.ids }, if: :category_is_expansion?
+  validates :parent, inclusion: { in: Game.where(category: 'main_game') }, if: :category_is_expansion?
 
   private
 
