@@ -6,3 +6,4 @@
   <li>Plattform(s): <%= @game.platforms.map{|platform|platform.name}.join(", ")%></li>
   <li>Genre(s): <%= @game.genres.map{|genre|genre.name}.join", "%></li>
 </ul>
+<%= link_to "Back to Games", games_path %>
