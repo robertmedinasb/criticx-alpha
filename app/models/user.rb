@@ -6,7 +6,7 @@ class User < ApplicationRecord
   devise :database_authenticatable, :registerable,
          :recoverable, :rememberable, :validatable
   has_many :reviews
-
+  has_secure_password
   # validations
   validates :username, :email, presence: true
   validate :should_be_16_years_old
@@ -17,6 +17,8 @@ class User < ApplicationRecord
          :recoverable, :rememberable, :validatable
 
   def should_be_16_years_old
+    return if birth_date.nil?
+
     unless birth_date > 16.years.ago
       'You should be 16 years old to create an account'
     end
